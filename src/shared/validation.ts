@@ -76,7 +76,10 @@ export const configSchema = z
       .refine(
         (v) =>
           !v.enabled ||
-          (v.repositories.length > 0 && !!v.email && v.tokenFile.startsWith('/') && !!v.accountId),
+          (v.repositories.length > 0 &&
+            !!v.email &&
+            /^(?:\/|[A-Za-z]:[\\/]|\\\\[^\\]+\\[^\\]+)/.test(v.tokenFile) &&
+            !!v.accountId),
         'Bitbucket: informe repositórios, e-mail, ID da conta e caminho absoluto do arquivo do token.',
       )
       .optional(),

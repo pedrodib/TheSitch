@@ -132,8 +132,8 @@ export function ForgeSettings({
         <>
           <p>
             Crie um API token da Atlassian com permissões de leitura de usuário, repositórios e pull requests.
-            Salve apenas o token em um arquivo local privado (permissão 600). Informe o caminho abaixo; o
-            conteúdo não entra no banco nem na exportação.
+            Salve apenas o token em um arquivo local privado (600 no macOS/Linux; ACL privada no Windows).
+            Informe o caminho abaixo; o conteúdo não entra no banco nem na exportação.
           </p>
           <div className="form-grid">
             <label className="field">
@@ -160,7 +160,7 @@ export function ForgeSettings({
               <input
                 value={bitbucket.tokenFile}
                 onChange={(e) => update({ bitbucket: { ...bitbucket, tokenFile: e.target.value } })}
-                placeholder="/Users/seu-usuario/.config/thesitch/bitbucket-token"
+                placeholder="Caminho absoluto do arquivo de token"
               />
               <small>Caminho absoluto, sem colar o token neste campo.</small>
             </label>

@@ -1,3 +1,4 @@
+import path from 'node:path';
 import { repositoryInScope } from '../shared/repositories';
 import type { IntegrationContext } from '../shared/types';
 import { run } from './cli';
@@ -10,7 +11,13 @@ export function createRepositoryResolver(context: IntegrationContext) {
     if (!cwd) return null;
     if (cache.has(cwd)) return cache.get(cwd) ?? null;
     const explicit = Object.entries(config.repoMappings)
-      .filter(([key]) => cwd === key || cwd.startsWith(`${key}/`))
+      .filter(([key]) => {
+        const relative = path.relative(key, cwd);
+        return (
+          relative === '' ||
+          (!path.isAbsolute(relative) && relative !== '..' && !relative.startsWith(`..${path.sep}`))
+        );
+      })
       .sort((a, b) => b[0].length - a[0].length)[0]?.[1];
     let name = explicit || '';
     let host = '';

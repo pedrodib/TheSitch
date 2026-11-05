@@ -103,8 +103,9 @@ function showWindow(): void {
     minHeight: 720,
     title: `TheSitch ${app.getVersion()} · Neon City`,
     backgroundColor: '#f4f0e7',
-    titleBarStyle: 'hiddenInset',
-    trafficLightPosition: { x: 20, y: 20 },
+    ...(process.platform === 'darwin'
+      ? { titleBarStyle: 'hiddenInset' as const, trafficLightPosition: { x: 20, y: 20 } }
+      : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/preload.js'),
       contextIsolation: true,
@@ -115,7 +116,7 @@ function showWindow(): void {
   });
   window.once('ready-to-show', () => window?.show());
   window.on('close', (event) => {
-    if (!quitting) {
+    if (!quitting && tray && process.platform !== 'linux') {
       event.preventDefault();
       window?.hide();
     }
@@ -141,7 +142,8 @@ function registerIpc(): void {
   handle('getConfig', () => call('getConfig'));
   handle('saveConfig', async (value) => {
     const config = await call<AppConfig>('saveConfig', validateConfig(value));
-    if (app.isPackaged) app.setLoginItemSettings({ openAtLogin: config.launchAtLogin });
+    if (app.isPackaged && process.platform !== 'linux')
+      app.setLoginItemSettings({ openAtLogin: config.launchAtLogin });
     void call('sync').catch(() => {});
     return config;
   });
@@ -210,7 +212,7 @@ function registerIpc(): void {
 
 function createTray(): void {
   const icon = nativeImage.createFromDataURL(trayIconData).resize({ width: 22, height: 22 });
-  icon.setTemplateImage(true);
+  icon.setTemplateImage(process.platform === 'darwin');
   tray = new Tray(icon);
   tray.setToolTip('TheSitch · Neon City');
   tray.setContextMenu(
@@ -230,7 +232,7 @@ function createTray(): void {
         },
       },
       { type: 'separator' },
-      { label: 'Sair do TheSitch', accelerator: 'Command+Q', click: () => app.quit() },
+      { label: 'Sair do TheSitch', accelerator: 'CommandOrControl+Q', click: () => app.quit() },
     ]),
   );
   tray.on('click', showWindow);
@@ -254,7 +256,11 @@ else {
     );
     registerIpc();
     workerReady = startWorker();
-    createTray();
+    try {
+      createTray();
+    } catch {
+      tray = null;
+    }
     showWindow();
     try {
       await workerReady;
@@ -279,5 +285,5 @@ app.on('before-quit', () => {
   tray?.destroy();
 });
 app.on('window-all-closed', () => {
-  /* The menu bar owns the application's lifetime. */
+  if (!tray || process.platform === 'linux') app.quit();
 });

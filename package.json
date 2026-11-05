@@ -1,7 +1,7 @@
 {
   "name": "thesitch",
   "version": "0.6.0",
-  "description": "Uma cidade cyberpunk para suas contribuições de engenharia",
+  "description": "A cyberpunk city for your engineering contributions",
   "private": true,
   "main": "out/main/index.js",
   "author": "TheSitch",
@@ -14,10 +14,10 @@
     "format": "biome check --write src tests electron.vite.config.ts",
     "test": "vitest run",
     "test:e2e": "pnpm build && playwright test",
-    "package": "pnpm build && electron-builder --mac dmg --arm64",
-    "package:dir": "pnpm build && electron-builder --mac dir --arm64",
-    "test:worker": "pnpm build && ELECTRON_RUN_AS_NODE=1 electron scripts/worker-smoke.cjs",
-    "package:zip": "pnpm package:dir && ditto -c -k --sequesterRsrc --keepParent release/mac-arm64/TheSitch.app release/TheSitch-mac-arm64.zip"
+    "package": "pnpm build && electron-builder",
+    "package:dir": "pnpm build && electron-builder --dir",
+    "test:worker": "pnpm build && node scripts/run-worker-smoke.cjs",
+    "package:zip": "pnpm build && node scripts/package-zip.cjs"
   },
   "dependencies": {
     "react": "19.2.7",
@@ -52,21 +52,32 @@
     "mac": {
       "category": "public.app-category.productivity",
       "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "arm64"
-          ]
-        }
+        "dmg",
+        "zip"
       ],
       "identity": "-",
       "icon": "build/icon.icns"
     },
     "dmg": {
-      "title": "TheSitch · Neon City"
+      "title": "TheSitch \u00b7 Neon City"
     },
     "electronDist": "node_modules/electron/dist",
-    "npmRebuild": false
+    "npmRebuild": false,
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ],
+      "icon": "build/icon.iconset/icon_512x512.png"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "tar.gz"
+      ],
+      "category": "Development",
+      "icon": "build/icon.iconset/icon_512x512.png"
+    }
   },
   "packageManager": "pnpm@11.18.0",
   "engines": {

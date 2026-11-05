@@ -1,228 +1,232 @@
 <div align="center">
-  <img src="src/renderer/assets/thesitch-mark.png" alt="Logotipo do TheSitch" width="112" />
+  <img src="src/renderer/assets/thesitch-mark.png" alt="TheSitch logo" width="112" />
   <h1>TheSitch</h1>
-  <p><strong>Seu trabalho, uma cidade viva.</strong></p>
-  <p>Um aplicativo desktop que transforma contribuições de engenharia em uma cidade cyberpunk.</p>
-  <p>macOS · Electron · React · TypeScript · SQLite</p>
+  <p><strong>Your work, a living city.</strong></p>
+  <p>A desktop app that turns engineering contributions into a cyberpunk city.</p>
+  <p>macOS · Windows · Linux · Electron · React · TypeScript · SQLite</p>
 </div>
 
 ---
 
-O **TheSitch** reúne PRs, merge requests, commits, entregas e consumo de tokens em um painel interativo. Cada repositório vira um bairro; conforme suas contribuições crescem, a cidade se desenvolve. O objetivo é facilitar a leitura do seu histórico de trabalho, com evidências e contexto.
+**TheSitch** brings pull requests, merge requests, commits, deliveries, and token usage together in an interactive dashboard. Each repository becomes a district that grows as your contributions accumulate. It helps you explore your work history with evidence and context.
 
-**Volume não equivale a qualidade ou impacto.** Os indicadores descrevem os registros disponíveis. Fins de semana, feriados e folgas sem contribuições não penalizam o desempenho.
+**Volume does not equal quality or impact.** The indicators describe the records available. Weekends, holidays, and days off without contributions do not count against performance.
 
-## Conteúdo
+## Contents
 
-- [Funcionalidades](#funcionalidades)
-- [Integrações](#integrações)
-- [Começando](#começando)
-- [Configuração](#configuração)
-- [Como ler a cidade](#como-ler-a-cidade)
-- [Importação e histórico](#importação-e-histórico)
-- [Privacidade e dados](#privacidade-e-dados)
-- [Desenvolvimento](#desenvolvimento)
-- [Limitações](#limitações)
-- [Contribuindo](#contribuindo)
-- [Licença](#licença)
+- [Features](#features)
+- [Integrations](#integrations)
+- [Getting started](#getting-started)
+- [Configuration](#configuration)
+- [Reading the city](#reading-the-city)
+- [Imports and history](#imports-and-history)
+- [Privacy and data](#privacy-and-data)
+- [Development](#development)
+- [Limitations](#limitations)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Funcionalidades
+## Features
 
-- **Cidade interativa:** bairros por repositório, crescimento gradual, iluminação conforme o horário, veículos e pedestres animados.
-- **Indicadores por período:** acompanhe entregas, PRs, commits e tokens; consulte os últimos 30 dias ou um intervalo personalizado.
-- **Prefeitômetro:** cinco níveis de ritmo de entregas, com calendário configurável e comparação com seu histórico.
-- **City Signal:** avaliação do prefeito com resumo local e análise opcional por IA via Codex CLI.
-- **Ranking de Prefeitos:** posição, média e comparação com autores ativos nos repositórios GitHub acessíveis.
-- **Importação transparente:** sincronização a cada 10 minutos por padrão, gravação incremental, retomada e tela detalhada de histórico.
-- **Tokens de IA:** leitura local de sessões do Codex e Claude Code, incluindo subagentes, com atribuição por repositório.
-- **Configuração portátil:** fontes, calendário e caminhos configuráveis, com importação e exportação de preferências.
-- **Modo demonstração:** explore dados sintéticos sem conectar contas.
+- **Interactive city:** repository districts, gradual growth, time-based lighting, and animated vehicles and pedestrians.
+- **Period metrics:** track deliveries, PRs, commits, and tokens over the last 30 days or a custom range.
+- **Mayor Meter:** five delivery pace levels, with a configurable calendar and comparison against your history.
+- **City Signal:** a mayor's assessment with a local summary and optional AI analysis through Codex CLI.
+- **Mayor Ranking:** rank, average, and comparison with active authors in accessible GitHub repositories.
+- **Transparent imports:** synchronization every 10 minutes by default, incremental saves, resumption, and a detailed import history.
+- **AI tokens:** local Codex and Claude Code session usage, including subagents, attributed to repositories.
+- **Portable configuration:** configurable sources, calendar, and paths, with preference import and export.
+- **Demo mode:** explore synthetic data without connecting accounts.
 
 <details>
-<summary>Ver uma prévia da cidade</summary>
+<summary>Preview the city</summary>
 
-![Prévia da progressão dos bairros](artifacts/city-preview.png)
+![Preview of district progression](artifacts/city-preview.png)
 
-Renderização do modelo com dados sintéticos para demonstrar diferentes níveis de desenvolvimento. Não é uma captura da interface completa.
+A rendering using synthetic data to show different stages of development. This is not a screenshot of the full interface.
 
 </details>
 
-## Integrações
+## Integrations
 
-| Fonte | Dados coletados | Autenticação |
+| Source | Data collected | Authentication |
 | --- | --- | --- |
-| GitHub | PRs próprios, revisões, commits e confirmação de produção quando disponível | GitHub CLI (`gh`) |
-| GitLab.com / GitLab privado | MRs próprios e commits, com associação commit/MR | GitLab CLI (`glab`) |
-| Bitbucket Cloud | PRs próprios e commits, com associação commit/PR | E-mail Atlassian e API token em arquivo local |
-| Azure DevOps | Cards atribuídos à conta conectada | Azure CLI (`az`) e extensão `azure-devops` |
-| Codex | Uso de tokens das sessões locais | Leitura de arquivos locais |
-| Claude Code | Uso de tokens das sessões locais | Leitura de arquivos locais |
+| GitHub | Your PRs, reviews, commits, and production confirmation when available | GitHub CLI (`gh`) |
+| GitLab.com / private GitLab | Your MRs and commits, with commit-to-MR association | GitLab CLI (`glab`) |
+| Bitbucket Cloud | Your PRs and commits, with commit-to-PR association | Atlassian email and API token in a local file |
+| Azure DevOps | Work items assigned to the connected account | Azure CLI (`az`) and the `azure-devops` extension |
+| Codex | Token usage from local sessions | Local files |
+| Claude Code | Token usage from local sessions | Local files |
 
-As fontes podem ser usadas em conjunto. GitLab e Bitbucket aceitam projetos de equipes ou contas pessoais, escolhidos explicitamente. **A integração GitHub ainda depende de organizações configuradas.** O ranking compara somente GitHub.
+Sources can be used together. GitLab and Bitbucket support explicitly selected team or personal projects. **The GitHub integration still requires configured organizations.** The ranking compares GitHub authors only.
 
-## Começando
+## Getting started
 
-### Requisitos
+### Requirements
 
-- **macOS em Apple Silicon** para o pacote desktop atual.
-- **Node.js 24 ou superior** e **pnpm 11.18.0** para executar ou compilar o projeto.
-- CLIs e contas autenticadas apenas para as integrações que você ativar.
+- macOS, Windows, or Linux. Native Windows and Linux builds have not yet been validated.
+- **Node.js 24 or later** and **pnpm 11.18.0** to run or build from source.
+- Authenticated CLI tools and accounts only for the integrations you enable.
 
-### Executar pelo código-fonte
+### Run from source
 
-Após obter o código, entre na pasta do projeto:
+After obtaining the code, open a terminal in the project directory:
 
 ```sh
-pnpm install
+npm install --global pnpm@11.18.0
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Para executar o build de produção:
+To run a production build:
 
 ```sh
 pnpm build
 pnpm start
 ```
 
-### Gerar o aplicativo
+### Package the app
+
+Run packaging commands on the target operating system:
 
 ```sh
-pnpm package:zip
+pnpm package
 ```
 
-O comando gera:
+The default targets are DMG and ZIP on macOS, NSIS installer and ZIP on Windows, and AppImage and tar.gz on Linux. Output is written to `release/`. Use `pnpm package:dir` for an unpacked app or `pnpm package:zip` for a ZIP archive on the current platform.
 
-- `release/mac-arm64/TheSitch.app` — aplicativo para abrir pelo Finder.
-- `release/TheSitch-mac-arm64.zip` — pacote transportável.
+Local macOS packages use ad hoc signing and are not notarized. Native Windows and Linux packaging and runtime behavior are pending validation.
 
-O pacote local usa assinatura ad hoc e não é notarizado. O projeto também possui `pnpm package` para gerar DMG, dependendo dos serviços de disco do macOS.
+### First use
 
-### Primeiro uso
+1. Open **Explore demo** to try the interface without connecting services.
+2. In **Settings**, set your name, city name, and desired sources.
+3. Authenticate integrations and select the organizations or repositories to track.
+4. Save and start synchronization. Historical collection begins on **January 1, 2026**.
+5. Open **Imports** to see what has been saved and what is still pending.
 
-1. Abra **Explorar demonstração** para conhecer a interface sem conectar serviços.
-2. Em **Configurações**, defina seu nome, o nome da cidade e as fontes desejadas.
-3. Autentique as integrações e selecione as organizações ou repositórios que deseja acompanhar.
-4. Salve e inicie a sincronização. A coleta histórica parte de **1º de janeiro de 2026**.
-5. Abra **Importações** para acompanhar o que foi salvo e o que ainda está pendente.
+On macOS and Windows, closing the window keeps the app running when a tray icon is available. On Linux, closing the window quits the app. Quit the app completely before replacing it with a new version; on macOS, use **⌘Q**.
 
-Fechar a janela pode manter o aplicativo na bandeja. Use **⌘Q** para encerrar completamente, inclusive antes de substituir o aplicativo por uma nova versão.
+Launch at login is supported for packaged macOS and Windows apps. On Linux, configure startup through your desktop environment; the in-app preference does not register an autostart entry.
 
-## Configuração
+## Configuration
 
-As preferências ficam disponíveis na interface. O arquivo [`thesitch.config.example.json`](thesitch.config.example.json) oferece uma configuração inicial genérica; configurações antigas recebem os valores padrão das novas fontes.
+Preferences are available in the interface. [`thesitch.config.example.json`](thesitch.config.example.json) provides a generic starting configuration; older configurations receive defaults for newer sources.
 
 ### GitHub
 
-Autentique o CLI:
+Authenticate the CLI:
 
 ```sh
 gh auth login
 ```
 
-Preencha o login e as organizações nas configurações. O app pode descobrir as organizações acessíveis à conta autenticada. Para outro host GitHub, configure o host e autentique o `gh` nele.
+Enter your login and organizations in settings. The app can discover organizations accessible to the authenticated account. For another GitHub host, configure the host and authenticate `gh` against it.
 
 ### GitLab
 
-Instale o [GitLab CLI](https://docs.gitlab.com/cli/) e autentique:
+Install the [GitLab CLI](https://docs.gitlab.com/cli/) and authenticate:
 
 ```sh
 glab auth login --hostname gitlab.com
 ```
 
-Para uma instância privada, substitua o host. Em **Fontes e ferramentas → Conectar GitLab**, informe:
+Replace the host for a private instance. Under **Sources and tools → Connect GitLab**, provide:
 
-- Host, usuário autenticado e caminho do `glab`, se necessário.
-- Um projeto por linha: `grupo/subgrupo/projeto` ou `usuario/projeto`.
-- E-mails usados na autoria dos seus commits, incluindo endereços `noreply` quando aplicável.
+- Host, authenticated username, and the path to `glab` if needed.
+- One project per line: `group/subgroup/project` or `user/project`.
+- Email addresses used to author your commits, including `noreply` addresses when applicable.
 
-O app também considera os e-mails retornados pela API da conta. Consulte as [opções oficiais de autenticação](https://docs.gitlab.com/cli/authentication/).
+The app also uses email addresses returned by the account API. See the [official authentication options](https://docs.gitlab.com/cli/authentication/).
 
 ### Bitbucket Cloud
 
-Não é necessário instalar um CLI. Crie um **API token Atlassian** com os escopos de leitura `read:user:bitbucket`, `read:repository:bitbucket` e `read:pullrequest:bitbucket`, seguindo a [documentação de autenticação](https://developer.atlassian.com/cloud/bitbucket/rest/intro/).
+No CLI is required. Create an **Atlassian API token** with the `read:user:bitbucket`, `read:repository:bitbucket`, and `read:pullrequest:bitbucket` read scopes, following the [authentication documentation](https://developer.atlassian.com/cloud/bitbucket/rest/intro/).
 
-Salve somente o token em um arquivo privado fora do projeto. Restrinja as permissões do arquivo:
+Save only the token in a private file outside the project. On macOS and Linux, restrict file permissions:
 
 ```sh
 chmod 600 ~/.config/thesitch/bitbucket-token
 ```
 
-Em **Conectar Bitbucket Cloud**, informe o e-mail Atlassian, o UUID ou `account_id` da conta, o caminho absoluto do arquivo e um `workspace/repositorio` por linha. O identificador da conta pode ser obtido nas configurações do Bitbucket ou pela API autenticada `/2.0/user`.
+On Windows, open the file's **Properties → Security → Advanced**, disable inherited permissions, and allow read access only to your account, SYSTEM, and Administrators. The app checks these ACLs through PowerShell before reading the token. Under **Connect Bitbucket Cloud**, enter your Atlassian email, account UUID or `account_id`, the absolute file path, and one `workspace/repository` per line. Find the account identifier in Bitbucket settings or through the authenticated `/2.0/user` API.
 
-O conteúdo do token não entra no SQLite nem na exportação de configurações. Não cole o token no campo de caminho ou em comandos compartilhados.
+The token contents are not stored in SQLite or exported settings. Do not paste the token into the path field or shared commands.
 
-A [associação entre commits e PRs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-pullrequests/#api-repositories-workspace-repo-slug-commit-commit-pullrequests-get) exige **Pull Request Commit Links**, habilitado pela opção **Go to pull request** na página de um commit. Quando os vínculos estão indisponíveis ou em processamento, a etapa fica pendente para evitar contagem duplicada.
+[Associating commits with PRs](https://developer.atlassian.com/cloud/bitbucket/rest/api-group-pullrequests/#api-repositories-workspace-repo-slug-commit-commit-pullrequests-get) requires **Pull Request Commit Links**, enabled through **Go to pull request** on a commit page. When links are unavailable or still being processed, the step remains pending to avoid double counting.
 
-Após salvar, use **Verificar GitLab e Bitbucket salvos** para conferir a autenticação.
+After saving, use **Check saved GitLab and Bitbucket** to verify authentication.
 
 ### Azure DevOps
 
-Configure o `az`, sua autenticação e a extensão `azure-devops`. No aplicativo, habilite a fonte e informe a organização e os projetos. A coleta usa a conta conectada para consultar cards atribuídos a ela.
+Set up `az`, authenticate, and install the `azure-devops` extension. In the app, enable the source and enter the organization and projects. Collection uses the connected account to query its assigned work items.
 
-### Codex, Claude Code e análise por IA
+On Windows, `.cmd` and `.bat` Azure CLI launchers are not supported; configure a native executable instead.
 
-Os caminhos padrão de leitura são:
+### Codex, Claude Code, and AI analysis
 
-| Ferramenta | Caminho |
+Default read paths:
+
+| Tool | Path |
 | --- | --- |
-| Codex | `~/.codex/sessions`, incluindo sessões arquivadas |
+| Codex | `~/.codex/sessions`, including archived sessions |
 | Claude Code | `~/.claude/projects` |
 
-Use o mapeamento de pastas para associar sessões a repositórios. Nomes ambíguos entre plataformas podem ser resolvidos usando o ID do repositório.
+Use folder mapping to associate sessions with repositories. Ambiguous names across platforms can be resolved using the repository ID.
 
-A **Análise com IA** é opcional e usa o Codex CLI autenticado, com modelo configurável. Quando habilitada, envia os metadados selecionados para análise. O envio de diffs tem uma opção separada e está disponível somente para GitHub. O consumo das análises do próprio TheSitch aparece separado dos demais tokens.
+**AI analysis** is optional and uses an authenticated Codex CLI with a configurable model. When enabled, it sends selected metadata for analysis. Sending diffs is a separate option available only for GitHub. Token usage from TheSitch's own analyses is shown separately.
 
-### Calendário
+### Calendar
 
-Configure fuso horário, dias úteis, férias, folgas e feriados adicionais. Feriados nacionais brasileiros podem ser obtidos automaticamente pela BrasilAPI; pontos facultativos não são tratados automaticamente como folga.
+Configure the time zone, working days, vacation, days off, and additional holidays. Brazilian national holidays can be fetched automatically through BrasilAPI; optional public holidays are not automatically treated as days off.
 
-Ausência de contribuições em dias não úteis é neutra. Períodos sem cobertura suficiente ficam em calibração, e o dia atual é tratado como provisório.
+No contributions on non-working days is neutral. Periods without enough coverage remain in calibration, and the current day is provisional.
 
-## Como ler a cidade
+## Reading the city
 
-| Elemento | Significado |
+| Element | Meaning |
 | --- | --- |
-| Bairro | Um repositório com contribuições identificadas |
-| Ocupação e altura | Desenvolvimento acumulado com base em PRs e commits independentes, respeitando agrupamentos |
-| Módulos luminosos | Representação de commits; a etiqueta mantém o total, mesmo quando o desenho atinge seu limite visual |
-| Energia | Consumo de tokens, com detalhamento por ferramenta e atribuição |
-| Prefeitômetro | Ritmo de entregas em relação ao histórico, não qualidade ou impacto de negócio |
-| City Signal | Resumo das evidências e avaliação do prefeito |
+| District | A repository with identified contributions |
+| Occupancy and height | Accumulated development based on PRs and independent commits, respecting groupings |
+| Illuminated modules | Commits; the label retains the total even when the drawing reaches its visual limit |
+| Energy | Token usage, broken down by tool and attribution |
+| Mayor Meter | Delivery pace relative to history, not quality or business impact |
+| City Signal | Evidence summary and mayor's assessment |
 
-O filtro de datas altera indicadores e histórias, **sem fazer o bairro acumulado encolher**. O replay permite observar um momento anterior. Commits associados a PRs são registrados, mas não geram entregas independentes duplicadas.
+The date filter changes metrics and stories **without shrinking the accumulated district**. Replay lets you view an earlier point in time. Commits associated with PRs are recorded but do not create duplicate independent deliveries.
 
-Veículos e pedestres são ambientação. A iluminação acompanha o horário atual no fuso configurado, independentemente do período selecionado.
+Vehicles and pedestrians are decorative. Lighting follows the current time in the configured time zone, regardless of the selected period.
 
-### Controles
+### Controls
 
-| Ação | Controle |
+| Action | Control |
 | --- | --- |
-| Aproximar / afastar | Scroll ou botões de zoom |
-| Rotacionar | Botão direito + arrasto horizontal |
-| Mover | Botão esquerdo + arrasto no fundo |
-| Localizar um repositório | Seletor **Ir para bairro** ou lista de bairros |
-| Restaurar câmera | **Centralizar** |
+| Zoom in / out | Scroll or zoom buttons |
+| Rotate | Right-click and drag horizontally |
+| Pan | Left-click and drag the background |
+| Find a repository | **Go to district** selector or district list |
+| Reset camera | **Center** |
 
-A cidade exibe oito bairros por página para limitar o custo gráfico. Movimento reduzido pode ser habilitado nas preferências.
+The city displays eight districts per page to limit graphics cost. Reduced motion can be enabled in preferences.
 
-## Importação e histórico
+## Imports and history
 
-A sincronização ocorre a cada **10 minutos por padrão**, com intervalo configurável. Cada fonte possui seu próprio histórico e checkpoint.
+Synchronization runs every **10 minutes by default**, with a configurable interval. Each source has its own history and checkpoint.
 
-- Dados são gravados durante a coleta, antes da conclusão de toda a fonte.
-- Consultas concluídas podem ser reaproveitadas na retomada de uma tentativa interrompida.
-- O checkpoint só avança quando a fonte conclui suas etapas.
-- Deltas usam sobreposição de 24 horas para reconferir alterações recentes.
-- Pausar ou encerrar o app preserva os dados já gravados.
-- A tela **Importações** informa períodos, etapas, registros salvos, erros e pendências.
+- Data is saved during collection, before the entire source finishes.
+- Completed queries can be reused when resuming an interrupted attempt.
+- The checkpoint advances only when the source completes its steps.
+- Incremental updates overlap by 24 hours to recheck recent changes.
+- Pausing or quitting preserves data already saved.
+- The **Imports** screen shows periods, steps, saved records, errors, and pending work.
 
-O ranking GitHub roda separadamente, a cada duas horas por padrão, com opções de uma ou três horas e atualização manual. Ele considera autores humanos com PRs mergeados nos repositórios acessíveis, não todos os funcionários da organização.
+The GitHub ranking runs separately every two hours by default, with one- and three-hour options and manual refresh. It considers human authors with merged PRs in accessible repositories, not every employee in an organization.
 
-Use a reconferência completa quando precisar revisar dados antigos que possam ter mudado fora da janela incremental. Sucesso de uma consulta não garante recuperação de dados apagados ou inacessíveis.
+Use a full recheck to review older data that may have changed outside the incremental window. A successful query does not guarantee recovery of deleted or inaccessible data.
 
-## Privacidade e dados
+## Privacy and data
 
-O TheSitch usa **SQLite local**, com WAL. Por padrão, os dados ficam no diretório `userData` do Electron, normalmente:
+TheSitch uses **local SQLite** with WAL. By default, data is stored in Electron's `userData` directory; on macOS this is usually:
 
 ```text
 ~/Library/Application Support/TheSitch/
@@ -230,76 +234,77 @@ O TheSitch usa **SQLite local**, com WAL. Por padrão, os dados ficam no diretó
 └── operations.jsonl
 ```
 
-- Credenciais permanecem nos CLIs autenticados ou no arquivo externo do token Bitbucket.
-- A leitura de sessões locais armazena contadores e metadados de uso, sem copiar as conversas para o banco.
-- Metadados de contribuições, como títulos e descrições de PRs, são armazenados localmente.
-- A análise por IA pode enviar os metadados selecionados ao serviço do Codex quando habilitada.
-- O aplicativo não publica comentários, cria PRs ou altera cards nos serviços conectados.
+- Credentials remain in authenticated CLI tools or the external Bitbucket token file.
+- Local session reading stores usage counts and metadata without copying conversations into the database.
+- Contribution metadata, such as PR titles and descriptions, is stored locally.
+- When enabled, AI analysis may send selected metadata to the Codex service.
+- The app does not post comments, create PRs, or modify work items in connected services.
 
-Encerre o app antes de fazer um backup manual do banco. `THESITCH_DATA_DIR` permite usar um diretório separado para testes.
+Quit the app before manually backing up the database. `THESITCH_DATA_DIR` can specify a separate directory for testing.
 
-Configurações exportadas podem conter nomes, organizações e caminhos locais: revise antes de compartilhá-las. Ao trocar de pessoa na mesma instalação, use outro identificador de workspace. Desabilitar uma fonte oculta seus dados sem apagá-los.
+Exported settings may contain names, organizations, and local paths; review them before sharing. When switching people on the same installation, use a different workspace identifier. Disabling a source hides its data without deleting it.
 
-## Desenvolvimento
+## Development
 
-### Comandos
+### Commands
 
-| Comando | Finalidade |
+| Command | Purpose |
 | --- | --- |
-| `pnpm dev` | Executar com recarga durante o desenvolvimento |
-| `pnpm check` | Verificar lint e formatação |
-| `pnpm format` | Aplicar correções de formatação e lint |
-| `pnpm typecheck` | Verificar tipos TypeScript |
-| `pnpm test` | Executar testes automatizados |
-| `pnpm test:worker` | Testar worker, IPC e SQLite no runtime do Electron |
-| `pnpm test:e2e` | Executar testes de interface com Playwright |
-| `pnpm build` | Gerar build de produção |
-| `pnpm package:dir` | Gerar o aplicativo macOS |
-| `pnpm package:zip` | Gerar aplicativo e ZIP |
-| `pnpm package` | Gerar DMG |
+| `pnpm dev` | Run with development reload |
+| `pnpm check` | Check lint and formatting |
+| `pnpm format` | Apply lint and formatting fixes |
+| `pnpm typecheck` | Check TypeScript types |
+| `pnpm test` | Run automated tests |
+| `pnpm test:worker` | Test the worker, IPC, and SQLite in the Electron runtime |
+| `pnpm test:e2e` | Run Playwright UI tests |
+| `pnpm build` | Create a production build |
+| `pnpm package:dir` | Create an unpacked app for the current platform |
+| `pnpm package:zip` | Create a ZIP for the current platform |
+| `pnpm package` | Create the default packages for the current platform |
 
-Testes de janela exigem uma sessão gráfica compatível. Os testes dos conectores usam respostas simuladas; valide também com uma conta de teste antes de afirmar compatibilidade com uma instância específica.
+Window tests require a compatible graphical session. Connector tests use mocked responses; also validate with a test account before claiming compatibility with a specific instance.
 
-### Estrutura
+### Structure
 
 ```text
 src/
-├── main/           # Processo Electron, IPC e coordenação dos serviços
-├── backend/        # SQLite, métricas, histórico e ranking
-├── integrations/   # Conectores, CLIs e leitura de sessões locais
-├── renderer/       # Interface React e renderização da cidade
-└── shared/         # Tipos, validação, calendário e regras compartilhadas
-tests/              # Testes de domínio, integrações e interface
-scripts/            # Verificações e utilitários de build
-build/              # Ícones e recursos de empacotamento
+├── main/           # Electron process, IPC, and service coordination
+├── backend/        # SQLite, metrics, history, and ranking
+├── integrations/   # Connectors, CLIs, and local session reading
+├── renderer/       # React UI and city rendering
+└── shared/         # Shared types, validation, calendar, and rules
+tests/              # Domain, integration, and UI tests
+scripts/            # Checks and build utilities
+build/              # Icons and packaging assets
 ```
 
-O domínio possui workspaces e membros para separar identidades. **Multiplayer ainda não está implementado:** não há servidor, convites ou sincronização entre computadores.
+The domain has workspaces and members to separate identities. **Multiplayer is not implemented:** there is no server, invitation system, or synchronization between computers.
 
-## Limitações
+## Limitations
 
-- O pacote atual é voltado ao macOS Apple Silicon; Windows, Linux e Macs Intel não têm distribuição validada.
-- Bitbucket Data Center não é suportado.
-- Revisões, deployments e estatísticas de diff de GitLab/Bitbucket não são coletados. O ranking permanece exclusivo do GitHub.
-- GitLab atribui commits pelos e-mails configurados ou retornados pela conta. Bitbucket usa o vínculo do autor com a conta; não infere identidade pelo nome.
-- A coleta de commits do Bitbucket pode percorrer o inventário para aplicar o recorte local. Seu custo incremental pode ser maior que o das outras fontes.
-- As coleções GitLab/Bitbucket têm limite defensivo de 100 páginas. Atingir esse limite deixa a etapa pendente, sem declarar cobertura completa.
-- Índices, permissões, paginação das APIs e registros removidos limitam a cobertura. Commits antigos publicados tardiamente podem exigir reconferência.
-- Os formatos locais do Codex e Claude Code podem mudar. Só é possível recuperar arquivos disponíveis no computador.
-- Não há integração com receita, incidentes ou analytics de produto: impacto de negócio não é inferido de volume de PRs, commits ou tokens.
+- Native Windows and Linux builds and runtime behavior are pending validation. Intel Mac distribution has not been validated.
+- Windows Azure CLI `.cmd` and `.bat` launchers are unsupported; configure a native executable.
+- Bitbucket Data Center is not supported.
+- GitLab/Bitbucket reviews, deployments, and diff statistics are not collected. Ranking is GitHub-only.
+- GitLab attributes commits using configured or account-returned email addresses. Bitbucket uses the author's account link and does not infer identity from a name.
+- Bitbucket commit collection may traverse the inventory to apply the date range locally, so incremental collection may cost more than other sources.
+- GitLab/Bitbucket collection has a defensive limit of 100 pages. Reaching it leaves the step pending instead of claiming complete coverage.
+- Indexes, permissions, API pagination, and deleted records limit coverage. Old commits published late may require a recheck.
+- Local Codex and Claude Code formats may change. Only files available on the computer can be recovered.
+- There is no integration with revenue, incidents, or product analytics; business impact is not inferred from PR, commit, or token volume.
 
-## Contribuindo
+## Contributing
 
-Contribuições são bem-vindas. Antes de propor uma mudança:
+Contributions are welcome. Before proposing a change:
 
-1. Descreva o problema e o comportamento esperado; para bugs, inclua passos de reprodução e versões relevantes.
-2. Mantenha a alteração focada e adicione testes para mudanças de comportamento.
-3. Execute `pnpm check`, `pnpm typecheck` e `pnpm test`.
-4. Para alterações no processo Electron ou na persistência, execute também `pnpm test:worker`.
-5. Explique como validou a mudança e informe limitações conhecidas.
+1. Describe the problem and expected behavior; for bugs, include reproduction steps and relevant versions.
+2. Keep the change focused and add tests for behavior changes.
+3. Run `pnpm check`, `pnpm typecheck`, and `pnpm test`.
+4. For Electron process or persistence changes, also run `pnpm test:worker`.
+5. Explain how you validated the change and report known limitations.
 
-Não inclua tokens, bancos de dados pessoais, conversas ou informações privadas de repositórios em exemplos, issues ou pull requests.
+Do not include tokens, personal databases, conversations, or private repository information in examples, issues, or pull requests.
 
-## Licença
+## License
 
-Este repositório ainda não possui um arquivo `LICENSE`. Uma licença precisa ser definida antes de sua distribuição como projeto open source.
+This repository does not yet have a `LICENSE` file. A license must be chosen before distribution as an open-source project.

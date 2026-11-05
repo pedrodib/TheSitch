@@ -1,9 +1,7 @@
 import { execFile } from 'node:child_process';
-import { constants } from 'node:fs';
-import { access } from 'node:fs/promises';
 import os from 'node:os';
-import path from 'node:path';
 import { promisify } from 'node:util';
+import { cliEnvironment, cliInvocation, findExecutable } from './cli-platform';
 
 const execute = promisify(execFile);
 
@@ -22,27 +20,7 @@ export function retryAtFromHeaders(headers: string, now = Date.now()): number | 
   return undefined;
 }
 export async function executable(command: string): Promise<string> {
-  if (command.includes('/')) return command;
-  for (const dir of [
-    path.join(os.homedir(), '.local/bin'),
-    path.join(os.homedir(), '.npm-global/bin'),
-    path.join(os.homedir(), 'Library/pnpm'),
-    '/opt/homebrew/bin',
-    '/usr/local/bin',
-    '/usr/bin',
-    '/bin',
-    ...(process.env.PATH || '').split(path.delimiter),
-  ]) {
-    if (!dir || !path.isAbsolute(dir)) continue;
-    const candidate = path.join(dir, command);
-    try {
-      await access(candidate, constants.X_OK);
-      return candidate;
-    } catch {
-      /* try next */
-    }
-  }
-  return command;
+  return findExecutable(command, cliEnvironment(process.env));
 }
 export async function run(
   command: string,
@@ -56,26 +34,12 @@ export async function run(
     signal?: AbortSignal;
   } = {},
 ): Promise<string> {
-  const bin = await executable(command);
-  const baseEnv = options.env || process.env;
-  const pathParts = [
-    path.join(os.homedir(), '.local/bin'),
-    path.join(os.homedir(), '.npm-global/bin'),
-    path.join(os.homedir(), 'Library/pnpm'),
-    '/opt/homebrew/bin',
-    '/usr/local/bin',
-    '/usr/bin',
-    '/bin',
-  ];
-  const env = {
-    ...baseEnv,
-    PATH: [
-      ...pathParts,
-      ...(baseEnv.PATH || '').split(path.delimiter).filter((p) => path.isAbsolute(p)),
-    ].join(path.delimiter),
-  };
+  const env = cliEnvironment(options.env || process.env);
+  const bin = await findExecutable(command, env);
+  const invocation = await cliInvocation(bin, args);
+  if (invocation.nodeMode) env.ELECTRON_RUN_AS_NODE = '1';
   try {
-    const task = execute(bin, args, {
+    const task = execute(invocation.bin, invocation.args, {
       cwd: options.cwd || os.homedir(),
       env,
       timeout: options.timeout || 60_000,
