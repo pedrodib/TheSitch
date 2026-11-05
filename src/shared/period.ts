@@ -1,3 +1,4 @@
+import { localDate } from './contributions';
 import type { Period } from './types';
 
 export function isCalendarDate(value: string): boolean {
@@ -12,4 +13,17 @@ export function isValidPeriod(period: Period): boolean {
     period.start <= period.end &&
     (Date.parse(period.end) - Date.parse(period.start)) / 86400000 <= 3660
   );
+}
+
+/** First UTC second belonging to a local calendar day, including midnight/DST transitions. */
+export function localDayStart(date: string, timezone: string): number {
+  const center = Date.parse(`${date}T00:00:00Z`) / 1000;
+  let low = center - 36 * 3600;
+  let high = center + 36 * 3600;
+  while (low < high) {
+    const middle = Math.floor((low + high) / 2);
+    if (localDate(new Date(middle * 1000), timezone) < date) low = middle + 1;
+    else high = middle;
+  }
+  return low * 1000;
 }

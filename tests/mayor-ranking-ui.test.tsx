@@ -38,8 +38,14 @@ it('shows provisional placement, the comparison universe and persists the chosen
   document.body.append(host);
   const root = createRoot(host);
   try {
-    await act(async () => root.render(<MayorRankingPanel period={period} demo={false} />));
+    await act(async () =>
+      root.render(<MayorRankingPanel period={period} demo={false} timezone="America/Sao_Paulo" />),
+    );
     expect(host.textContent).toContain('Classificação provisória');
+    expect(host.textContent).toContain('America/Sao_Paulo');
+    expect(host.textContent).toContain('PRs criados');
+    expect(host.querySelector('thead')?.textContent).toContain('PRs mergeados');
+    expect(host.textContent).not.toContain('dias em UTC');
     expect(host.textContent).toContain('+100%');
     expect(host.textContent).toContain('alice');
     expect(host.textContent).toContain('não todos os funcionários');

@@ -3,9 +3,17 @@ import type { MayorRanking, Period } from '../shared/types';
 import './mayor-ranking.css';
 
 const number = (value: number) => value.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
-const date = (value: string | null) =>
-  value ? new Date(value).toLocaleString('pt-BR') : 'Ainda não consultado';
-export function MayorRankingPanel({ period, demo }: { period: Period; demo: boolean }) {
+const date = (value: string | null, timezone: string) =>
+  value ? new Date(value).toLocaleString('pt-BR', { timeZone: timezone }) : 'Ainda não consultado';
+export function MayorRankingPanel({
+  period,
+  demo,
+  timezone,
+}: {
+  period: Period;
+  demo: boolean;
+  timezone: string;
+}) {
   const [data, setData] = useState<MayorRanking | null>(null);
   const [error, setError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
@@ -40,7 +48,7 @@ export function MayorRankingPanel({ period, demo }: { period: Period; demo: bool
         <span className="eyebrow">LIGA DAS CIDADES · GITHUB</span>
         <h2>Ranking de Prefeitos</h2>
         <p>
-          PRs mergeados · {period.start} → {period.end} · dias em UTC
+          PRs mergeados · {data?.period.start ?? period.start} → {data?.period.end ?? period.end} · {timezone}
         </p>
       </header>
       {demo ? (
@@ -53,7 +61,8 @@ export function MayorRankingPanel({ period, demo }: { period: Period; demo: bool
           ) : (
             <>
               <p>
-                Esta liga compara somente GitHub. Contribuições GitLab e Bitbucket aparecem na cidade e nos
+                O ranking conta PRs pela data do merge; o painel “PRs criados” usa a data de abertura. Esta
+                liga compara somente GitHub. Contribuições GitLab e Bitbucket aparecem na cidade e nos
                 indicadores pessoais.
               </p>
               <div className="league-status" role="status">
@@ -145,9 +154,9 @@ export function MayorRankingPanel({ period, demo }: { period: Period; demo: bool
                 </select>
               </label>
               <p className="league-dates">
-                Cobertura mais antiga: {date(data.checkedAt)}
+                Cobertura mais antiga: {date(data.checkedAt, timezone)}
                 <br />
-                Próxima rodada a partir de: {date(data.nextAt)}
+                Próxima rodada a partir de: {date(data.nextAt, timezone)}
               </p>
               <div className="league-table">
                 <table>
@@ -155,7 +164,7 @@ export function MayorRankingPanel({ period, demo }: { period: Period; demo: bool
                     <tr>
                       <th>Posição</th>
                       <th>Prefeito / cidade</th>
-                      <th>PRs</th>
+                      <th>PRs mergeados</th>
                       <th>× média</th>
                     </tr>
                   </thead>

@@ -420,7 +420,14 @@ function App() {
           ×
         </button>
       )}
-      {panel === 'ranking' && <MayorRankingPanel period={period} demo={dashboard?.demo ?? false} />}
+      {panel === 'ranking' && (
+        <MayorRankingPanel
+          key={config.calendar.timezone}
+          period={period}
+          demo={dashboard?.demo ?? false}
+          timezone={config.calendar.timezone}
+        />
+      )}
       <ImportSummary history={imports} onOpen={() => setHistoryOpen(true)} />
       {historyOpen && (
         <ImportHistoryScreen
@@ -768,14 +775,14 @@ function App() {
               label="ENTREGAS"
               value={dashboard?.metrics.deliveries}
               previous={dashboard?.previousMetrics.deliveries}
-              note="histórias em movimento"
+              note="conclusões no período, com agrupamentos"
             />
             <Metric
               icon="◇"
-              label="PULL REQUESTS"
+              label="PRs CRIADOS"
               value={dashboard?.metrics.pullRequests}
               previous={dashboard?.previousMetrics.pullRequests}
-              note="ideias compartilhadas"
+              note="abertos no período, em qualquer estado"
             />
             <Metric
               icon="▦"
