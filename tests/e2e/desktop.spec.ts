@@ -58,10 +58,18 @@ test('cidade, dados demonstrativos, filtros e configurações no Electron real',
         }
       }),
     ).resolves.toBe(false);
-    await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].close());
-    expect(await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isVisible())).toBe(
-      false,
-    );
+    if (process.platform === 'linux') {
+      const closed = app.waitForEvent('close');
+      await app.evaluate(({ BrowserWindow }) => {
+        setTimeout(() => BrowserWindow.getAllWindows()[0].close(), 0);
+      });
+      await closed;
+    } else {
+      await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].close());
+      expect(await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isVisible())).toBe(
+        false,
+      );
+    }
   } finally {
     await app.close();
     await rm(dataDir, { recursive: true, force: true });

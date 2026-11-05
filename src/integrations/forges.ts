@@ -3,6 +3,7 @@ import path from 'node:path';
 import { HISTORY_START } from '../shared/defaults';
 import type { Contribution, ImportResult, IntegrationContext, Repository } from '../shared/types';
 import { errorResult, run } from './cli';
+import { assertPrivateTokenFile } from './token-permissions';
 
 type Forge = 'gitlab' | 'bitbucket';
 type Row = {
@@ -39,7 +40,8 @@ type Row = {
 async function tokenFromFile(file: string): Promise<string> {
   if (!path.isAbsolute(file)) throw new Error('Invalid token file');
   const info = await stat(file);
-  if (!info.isFile() || info.size > 16384 || (info.mode & 0o077) !== 0) throw new Error('Invalid token file');
+  if (!info.isFile() || info.size > 16384) throw new Error('Invalid token file');
+  await assertPrivateTokenFile(file, info.mode);
   const token = (await readFile(file, 'utf8')).trim();
   if (!token) throw new Error('Empty token file');
   return token;
