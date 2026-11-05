@@ -10,6 +10,10 @@
 
 **TheSitch** brings pull requests, merge requests, commits, deliveries, and token usage together in an interactive dashboard. Each repository becomes a district that grows as your contributions accumulate. It helps you explore your work history with evidence and context.
 
+![Animated synthetic city tour with rotating camera and zoom](artifacts/city-tour.gif)
+
+*Rendered from the production city model with fictitious repositories and contributions. This looping preview demonstrates camera rotation, zoom and traffic; it is not a recording of the full desktop interface.*
+
 **Volume does not equal quality or impact.** The indicators describe the records available. Weekends, holidays, and days off without contributions do not count against performance.
 
 ## Contents
@@ -38,14 +42,7 @@
 - **Portable configuration:** configurable sources, calendar, and paths, with preference import and export.
 - **Demo mode:** explore synthetic data without connecting accounts.
 
-<details>
-<summary>Preview the city</summary>
 
-![Preview of district progression](artifacts/city-preview.png)
-
-A rendering using synthetic data to show different stages of development. This is not a screenshot of the full interface.
-
-</details>
 
 ## Integrations
 
@@ -245,6 +242,17 @@ Quit the app before manually backing up the database. `THESITCH_DATA_DIR` can sp
 Exported settings may contain names, organizations, and local paths; review them before sharing. When switching people on the same installation, use a different workspace identifier. Disabling a source hides its data without deleting it.
 
 ## Development
+
+### Regenerate the animated preview
+
+With project dependencies installed, Python 3 and Pillow available:
+
+```sh
+python3 scripts/demo/render-gif.py
+```
+
+This exports synthetic geometry through the production city model and projection code, then writes `artifacts/city-tour.gif` and its static poster. It does not connect to services or read your local activity database.
+
 
 ### Commands
 
