@@ -1,5 +1,7 @@
 import { createHash } from 'node:crypto';
 import { createGithubApi, type GithubApi } from '../integrations/github-api';
+import { localDate } from '../shared/contributions';
+import { localDayStart } from '../shared/period';
 import type { MayorRanking, Period } from '../shared/types';
 import type { Store } from './store';
 
@@ -30,11 +32,11 @@ export class MayorLeague {
     return { ...config, organizations: [...new Set(config.organizations.map((org) => org.toLowerCase()))] };
   }
   private scope(config = this.config()) {
-    return `league:${digest(JSON.stringify([config.workspace.id, config.githubHost, [...config.organizations].sort(), config.workspace.members.map((m) => m.externalLogin)]))}:`;
+    return `league:local-v1:${digest(JSON.stringify([config.calendar.timezone, config.workspace.id, config.githubHost, [...config.organizations].sort(), config.workspace.members.map((m) => m.externalLogin)]))}:`;
   }
-  private days(period: Period) {
+  private days(period: Period, timezone: string) {
     const result: string[] = [];
-    const end = Math.min(Date.parse(period.end), Date.now());
+    const end = Math.min(Date.parse(period.end), Date.parse(localDate(new Date(), timezone)));
     for (
       let date = end - (end % dayMs);
       date >= Math.max(Date.parse(period.start), Date.parse('2026-01-01'));
@@ -58,17 +60,19 @@ export class MayorLeague {
     this.cancel();
   }
   view(period: Period): MayorRanking {
-    if (period.rolling)
+    const config = this.config();
+    if (period.rolling) {
+      const today = localDate(new Date(), config.calendar.timezone);
       period = {
-        start: new Date(Date.now() - 29 * dayMs).toISOString().slice(0, 10),
-        end: new Date().toISOString().slice(0, 10),
+        start: new Date(Date.parse(today) - 29 * dayMs).toISOString().slice(0, 10),
+        end: today,
         rolling: true,
       };
+    }
     this.period = period;
-    const config = this.config(),
-      scope = this.scope(config);
+    const scope = this.scope(config);
     const refresh = this.store.getState<{ start: string; end: string; at: number }>(`${scope}refresh`);
-    const days = this.days(period),
+    const days = this.days(period, config.calendar.timezone),
       totals = new Map<string, number>(),
       repos = new Set<string>();
     let completed = 0;
@@ -177,7 +181,7 @@ export class MayorLeague {
     try {
       // Fill missing days before refreshing snapshots, so a large first import cannot starve.
       const tasks = config.organizations.flatMap((org) =>
-        this.days(period).map((day) => ({
+        this.days(period, config.calendar.timezone).map((day) => ({
           org,
           day,
           saved: this.store.getState<Day>(`${scope}${org}:${day}`),
@@ -194,11 +198,21 @@ export class MayorLeague {
           (!saved || Date.parse(saved.at) < refresh.at);
         if (saved && !requested && now - Date.parse(saved.at) < (recent ? this.interval() * hour : 7 * dayMs))
           continue;
-        this.phase = `Conferindo ${org} · ${day} (UTC) · ${requests}/20 consultas`;
+        this.phase = `Conferindo ${org} · ${day} (${config.calendar.timezone}) · ${requests}/20 consultas`;
         const prefix = `${scope}pending:${org}:${day}:`;
-        const chunks = this.store.getState<Chunk[]>(`${prefix}chunks`) ?? [
-          { from: `${day}T00:00:00Z`, to: `${day}T23:59:59Z` },
-        ];
+        const nextDay = new Date(Date.parse(day) + dayMs).toISOString().slice(0, 10);
+        const start = localDayStart(day, config.calendar.timezone);
+        const end = localDayStart(nextDay, config.calendar.timezone);
+        const chunks =
+          this.store.getState<Chunk[]>(`${prefix}chunks`) ??
+          (end > start
+            ? [
+                {
+                  from: new Date(start).toISOString().replace('.000', ''),
+                  to: new Date(end - 1000).toISOString().replace('.000', ''),
+                },
+              ]
+            : []);
         const items: Item[] = [];
         for (let i = 0; i < chunks.length; i++) {
           const chunk = chunks[i];

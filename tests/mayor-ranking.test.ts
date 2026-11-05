@@ -85,9 +85,9 @@ it('rejects incomplete search results and retains the last confirmed snapshot', 
 it('splits searches above 1000 results rather than silently truncating', async () => {
   const fetch = vi.fn(async (endpoint: string) => {
     const query = decodeURIComponent(endpoint);
-    return query.includes('00:00:00Z..2026-11-05T23:59:59Z')
+    return query.includes('03:00:00Z..2026-11-06T02:59:59Z')
       ? { total_count: 1001, incomplete_results: false, items: [] }
-      : response([item(query.includes('00:00:00Z') ? 1 : 2)]);
+      : response([item(query.includes('03:00:00Z') ? 1 : 2)]);
   });
   const league = new MayorLeague(store, () => fetch);
   league.view(period);
@@ -171,4 +171,55 @@ it('resumes the remainder of a bounded manual refresh after restart', async () =
   vi.setSystemTime(new Date('2026-11-05T16:03:00Z'));
   await league.tick();
   expect(league.view(range)).toMatchObject({ partial: false, completedDays: 25 });
+});
+
+it('counts merges within local midnight boundaries rather than the UTC calendar day', async () => {
+  const merges = [
+    '2026-11-05T02:59:59Z',
+    '2026-11-05T03:00:00Z',
+    '2026-11-06T02:59:59Z',
+    '2026-11-06T03:00:00Z',
+  ];
+  const fetch = vi.fn(async (endpoint: string) => {
+    const query = new URL(`https://api.github.com/${endpoint}`).searchParams.get('q') ?? '';
+    const range = query.match(/merged:(\S+)\.\.(\S+)/);
+    if (!range) throw new Error('Missing merge date range');
+    return response(merges.flatMap((date, i) => (date >= range[1] && date <= range[2] ? [item(i)] : [])));
+  });
+  const league = new MayorLeague(store, () => fetch);
+  league.view(period);
+  await league.tick();
+  expect(league.view(period)).toMatchObject({ mine: 2, partial: false });
+  expect(decodeURIComponent(fetch.mock.calls[0][0])).toContain(
+    'merged:2026-11-05T03:00:00Z..2026-11-06T02:59:59Z',
+  );
+});
+
+it('isolates timezone caches and rechecks without waiting for the previous scope interval', async () => {
+  const fetch = vi.fn(async () => response([item(1)]));
+  const league = new MayorLeague(store, () => fetch);
+  league.view(period);
+  await league.tick();
+  const config = store.getConfig();
+  store.saveConfig({ ...config, calendar: { ...config.calendar, timezone: 'Asia/Tokyo' } });
+  expect(league.view(period)).toMatchObject({ mine: 0, partial: true });
+  await league.tick();
+  expect(fetch).toHaveBeenCalledTimes(2);
+  expect(league.view(period)).toMatchObject({ mine: 1, partial: false });
+});
+
+it('uses the local date for rolling periods and does not query local tomorrow', async () => {
+  vi.setSystemTime(new Date('2026-11-06T01:00:00Z'));
+  const fetch = vi.fn(async () => response([]));
+  const league = new MayorLeague(store, () => fetch);
+  expect(league.view({ ...period, rolling: true }).period).toEqual({
+    start: '2026-10-07',
+    end: '2026-11-05',
+    rolling: true,
+  });
+  expect(league.view({ start: '2026-11-05', end: '2026-11-06' }).totalDays).toBe(1);
+  const config = store.getConfig();
+  store.saveConfig({ ...config, calendar: { ...config.calendar, timezone: 'Asia/Tokyo' } });
+  expect(league.view({ ...period, rolling: true }).period.end).toBe('2026-11-06');
+  expect(league.view({ start: '2026-11-05', end: '2026-11-06' }).totalDays).toBe(2);
 });
