@@ -1,0 +1,702 @@
+/* HUD colors are independent of city illumination so text stays readable all day. */
+.cyberpunk {
+  --ink: #d9e8f5;
+  --muted: #99afc8;
+  --cyan: #59eeff;
+  --panel: #101a30ed;
+  --line: #3f74956b;
+  color: var(--ink);
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.cyberpunk
+  :where(
+    h1,
+    h2,
+    h3,
+    strong,
+    p,
+    small,
+    button,
+    input,
+    textarea,
+    .kicker,
+    .eyebrow,
+    .edition,
+    .brand,
+    .gazette-title,
+    .map-count,
+    .map-label
+  ) {
+  font-family: inherit;
+}
+.cyberpunk.game-view :where(h1, h2, h3, strong) {
+  color: var(--ink);
+}
+.cyberpunk
+  :where(
+    p,
+    small,
+    .section-description,
+    .period-dates,
+    .replay-value,
+    .metric-top,
+    .metric-change,
+    .gazette-top,
+    .gazette-rule,
+    .gazette-bottom,
+    .assessment-meta,
+    .muted,
+    .field,
+    .toggle,
+    .detail p,
+    .detail small,
+    .diagnostics,
+    .empty-text,
+    .district-count,
+    .section-heading p
+  ) {
+  color: var(--muted);
+}
+.cyberpunk
+  :where(
+    .brand-mark,
+    .kicker,
+    .eyebrow,
+    .edition,
+    .text-button,
+    .icon-button,
+    .section-heading h2 span,
+    .energy h2 span,
+    .settings-header h2 span
+  ) {
+  color: var(--cyan);
+}
+.cyberpunk
+  :where(
+    .topbar,
+    .controls,
+    .map-footer,
+    .metrics,
+    .metric,
+    .onboarding,
+    .settings-panel,
+    .game-dock,
+    .gazette,
+    .energy,
+    .lower-grid
+  ) {
+  background: var(--panel);
+  border-color: var(--line);
+  box-shadow:
+    0 12px 40px #03081666,
+    inset 0 1px #81dfff0d;
+  border-radius: 8px;
+}
+.cyberpunk.game-view .topbar {
+  background: var(--panel);
+  border-color: var(--line);
+}
+.cyberpunk.game-view .controls,
+.cyberpunk.game-view .map-footer,
+.cyberpunk.game-view .metric,
+.cyberpunk.game-view .onboarding,
+.cyberpunk.game-view .settings-panel {
+  background: var(--panel);
+  border-color: var(--line);
+}
+.cyberpunk.game-view.panel-gazette .gazette,
+.cyberpunk.game-view.panel-districts .lower-grid,
+.cyberpunk.game-view.panel-energy .energy {
+  background: var(--panel);
+  border-color: var(--line);
+}
+.cyberpunk.game-view .brand {
+  font: 800 23px / 1 sans-serif;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+}
+.cyberpunk.game-view .brand small {
+  color: #7897b4;
+  letter-spacing: 2px;
+  font-size: 7px;
+}
+.cyberpunk.game-view .intro h1 {
+  color: #e2efff;
+  font: 600 29px / 1.1 sans-serif;
+  letter-spacing: -1px;
+  text-shadow: 0 0 20px #49bcff66;
+}
+.cyberpunk.game-view .intro h1 em {
+  color: #6cf1ff;
+  font-style: normal;
+}
+.cyberpunk.game-view .eyebrow {
+  color: #ff79de;
+  letter-spacing: 3px;
+}
+.cyberpunk.game-view .metrics-section {
+  width: 470px;
+}
+.cyberpunk.game-view .metrics {
+  grid-template-columns: repeat(5, 1fr);
+  border-color: var(--line);
+}
+.cyberpunk.game-view .metric > strong {
+  font: 500 26px / 1.1 monospace;
+  color: #e5f6ff;
+}
+.cyberpunk.game-view .metric-top {
+  color: #8ea9c4;
+}
+.cyberpunk.game-view .metric-change {
+  color: #60dcb8;
+}
+.cyberpunk.game-view .metric-change.down {
+  color: #ffb879;
+}
+.cyberpunk
+  :where(
+    .district-row,
+    .activity-row,
+    .settings-section,
+    .settings-header,
+    .settings-footer,
+    .toggle,
+    .gazette-rule,
+    .gazette-top,
+    .gazette-bottom,
+    .priority
+  ) {
+  border-color: var(--line);
+}
+.cyberpunk
+  :where(.district-row strong, .activity-row strong, .energy-stats strong, .settings-section h3 span) {
+  color: #d9e8f5;
+}
+.cyberpunk
+  :where(
+    .district-row small,
+    .activity-row small,
+    .energy p,
+    .gazette-body p,
+    .field small,
+    .toggle small,
+    .onboarding p
+  ) {
+  color: #a5b8d0;
+}
+.cyberpunk.game-view :where(.district-row.selected, .district-icon, .tag, .demo-badge) {
+  color: #6eedff;
+  background: #21354e;
+}
+.cyberpunk.game-view :where(.outline-button, .primary) {
+  color: var(--cyan);
+  border-color: #3a9daf;
+  background: #123247;
+  border-radius: 5px;
+}
+.cyberpunk .primary {
+  background: #66e5f5;
+  color: #071320;
+}
+.cyberpunk.game-view .segmented button {
+  color: #a8bed7;
+}
+.cyberpunk.game-view .segmented button.active {
+  background: #234057;
+  color: #80f1ff;
+  box-shadow: inset 0 -2px #4feaff;
+}
+.cyberpunk .game-dock {
+  background: #0c172bee;
+  border-color: #3e7096;
+  border-radius: 10px;
+}
+.cyberpunk.game-view .game-dock button {
+  color: #a4bbd5;
+}
+.cyberpunk.game-view .game-dock button[aria-pressed="true"] {
+  color: #8df4ff;
+  background: #17354f;
+  box-shadow:
+    inset 0 -2px #61ecff,
+    0 0 16px #42c5ff20;
+}
+.cyberpunk .close-game-panel {
+  background: #182943;
+  color: #66eaff;
+  border-color: #4b849a;
+}
+.cyberpunk.game-view .gazette-title {
+  color: #72eeff;
+  font: 800 28px / 1.1 sans-serif;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+}
+.cyberpunk.game-view .gazette-title small {
+  color: #a9bad5;
+}
+.cyberpunk .gazette-body .caveat {
+  color: #a5b6d0;
+}
+.cyberpunk.game-view :where(.ornament, .priority strong, .settings-section h3) {
+  color: #ec83d8;
+}
+.cyberpunk.game-view input:not([type="checkbox"]):not([type="range"]),
+.cyberpunk.game-view textarea {
+  background: #0d182b;
+  color: #d8ecff;
+  border-color: #3b526f;
+  color-scheme: dark;
+}
+.cyberpunk input[type="range"],
+.cyberpunk input[type="checkbox"] {
+  accent-color: #58e4f4;
+}
+.cyberpunk.game-view .weekdays button {
+  background: #122139;
+  color: #9fb6d0;
+  border-color: #3d506c;
+}
+.cyberpunk.game-view .weekdays button.active {
+  color: #071221;
+  background: #6be7ee;
+}
+.cyberpunk .alert,
+.cyberpunk .sync-error {
+  color: #ffd4b5;
+  background: #482839;
+}
+.cyberpunk.game-view .map-frame {
+  background: #070f21;
+}
+.cyberpunk.game-view .map-caption {
+  display: none;
+}
+.cyberpunk.game-view .map-tools button,
+.cyberpunk.game-view .camera-controls button {
+  background: #13233de8;
+  color: #69ebff;
+  border-color: #365879;
+}
+.cyberpunk .camera-controls {
+  color: #adc7dc;
+}
+.cyberpunk .district-marker {
+  background: #0c1a30ed;
+  color: #d6edff;
+  border-color: #3a778a;
+  border-radius: 3px;
+  box-shadow: 0 5px 14px #0006;
+}
+.cyberpunk .district-marker.active {
+  background: #273051;
+  border-color: #fe78df;
+  box-shadow: 0 0 14px #f156d14d;
+}
+.cyberpunk.game-view .district-marker small {
+  color: #70cfdf;
+  font-size: 8px;
+}
+.cyberpunk .map-empty {
+  background: #101e33ee;
+  color: #d8eeff;
+  white-space: normal;
+  width: 300px;
+  border: 1px solid #3a738e;
+  border-radius: 8px;
+}
+.cyberpunk .map-pages,
+.cyberpunk.game-view .map-pages button {
+  color: #9acde3;
+  border-color: #365472;
+}
+.cyberpunk .city-clock {
+  position: absolute;
+  top: 250px;
+  left: 32px;
+  color: #8beeff;
+  font: 12px / 1.5 monospace;
+  pointer-events: none;
+  letter-spacing: 1px;
+}
+.cyberpunk.game-view .city-clock small {
+  display: block;
+  font-size: 8px;
+  color: #a5bbd6;
+  letter-spacing: 0;
+}
+.clock-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 8px;
+  background: #65ffc3;
+  box-shadow: 0 0 10px #65ffc3;
+}
+.cyberpunk .city-legend {
+  position: absolute;
+  left: 32px;
+  bottom: 140px;
+  color: #7deaff;
+  font: 10px / 1.6 monospace;
+  pointer-events: none;
+}
+.cyberpunk .city-legend span {
+  display: block;
+  font-size: 8px;
+  color: #afbad1;
+}
+.neon-face {
+  filter: url(#neon-glow);
+}
+.solid-face {
+  transition: filter 30s linear;
+}
+.time-day .solid-face {
+  filter: brightness(1.6) saturate(0.8);
+}
+.time-day .neon-face {
+  filter: none;
+}
+.time-dawn .solid-face,
+.time-dusk .solid-face {
+  filter: brightness(1.2);
+}
+.sky-center,
+.sky-edge {
+  transition: stop-color 30s linear;
+}
+.time-day .sky-center {
+  stop-color: #6b86a7;
+}
+.time-day .sky-edge {
+  stop-color: #233650;
+}
+.time-dawn .sky-center {
+  stop-color: #6a496a;
+}
+.time-dawn .sky-edge {
+  stop-color: #1d2949;
+}
+.time-dusk .sky-center {
+  stop-color: #61355c;
+}
+.time-dusk .sky-edge {
+  stop-color: #1a1737;
+}
+.cyberpunk .mayor-meter {
+  --signal: #8faac7;
+  position: fixed;
+  right: 22px;
+  top: 185px;
+  z-index: 4;
+  width: 200px;
+  text-align: left;
+  padding: 15px;
+  color: var(--signal);
+  background: #0c182ddd;
+  border: 1px solid color-mix(in srgb, var(--signal), transparent 55%);
+  border-radius: 7px;
+  box-shadow: 0 10px 35px #02081566;
+  backdrop-filter: blur(14px);
+}
+.cyberpunk .mayor-meter[data-level="5"] {
+  --signal: #69e7ff;
+}
+.cyberpunk .mayor-meter[data-level="4"] {
+  --signal: #69f4b8;
+}
+.cyberpunk .mayor-meter[data-level="3"] {
+  --signal: #ffe480;
+}
+.cyberpunk .mayor-meter[data-level="2"] {
+  --signal: #ffa76b;
+}
+.cyberpunk .mayor-meter[data-level="1"] {
+  --signal: #ff6b8a;
+}
+.meter-caption {
+  font: 8px monospace;
+  letter-spacing: 1px;
+}
+.meter-reading {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 8px 0;
+}
+.cyberpunk.game-view .meter-reading strong {
+  font: 52px / 1 monospace;
+  color: var(--signal);
+  text-shadow: 0 0 20px color-mix(in srgb, var(--signal), transparent 60%);
+}
+.cyberpunk .meter-reading span {
+  font: bold 12px monospace;
+}
+.cyberpunk.game-view .meter-reading small {
+  display: block;
+  font-size: 6px;
+  color: #91aac7;
+  margin-top: 6px;
+}
+.meter-scale {
+  display: flex;
+  gap: 4px;
+  margin: 10px 0;
+}
+.meter-scale i {
+  flex: 1;
+  text-align: center;
+  font: 9px / 16px monospace;
+  background: #243249;
+  color: #98a9c1;
+  border-bottom: 2px solid #435471;
+}
+.meter-scale i[data-active="true"] {
+  color: #091222;
+  background: var(--signal);
+  border-color: var(--signal);
+}
+.cyberpunk.game-view .mayor-meter > small {
+  color: #adbed5;
+  font-size: 8px;
+}
+.cyberpunk:not(.panel-city) .mayor-meter {
+  display: none;
+}
+@media (max-width: 1150px) {
+  .cyberpunk.game-view .metrics-section {
+    width: 430px;
+  }
+  .cyberpunk .mayor-meter {
+    top: 245px;
+  }
+  .cyberpunk .city-clock {
+    top: 218px;
+  }
+}
+@media (max-width: 760px) {
+  .cyberpunk .mayor-meter {
+    top: 250px;
+    width: 150px;
+  }
+  .cyberpunk.game-view .metrics-section {
+    width: calc(100vw - 44px);
+  }
+  .cyberpunk .city-clock {
+    top: 218px;
+  }
+  .cyberpunk .city-legend {
+    bottom: 190px;
+    width: 180px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .solid-face,
+  .sky-center,
+  .sky-edge {
+    transition: none;
+  }
+}
+.reduce-motion .solid-face,
+.reduce-motion .sky-center,
+.reduce-motion .sky-edge {
+  transition: none;
+}
+
+@media (min-width: 1151px) and (max-width: 1350px) {
+  .cyberpunk.game-view .metrics-section {
+    top: 144px;
+  }
+  .cyberpunk .mayor-meter {
+    top: 245px;
+  }
+  .cyberpunk.game-view.panel-gazette .gazette,
+  .cyberpunk.game-view.panel-districts .lower-grid,
+  .cyberpunk.game-view.panel-energy .energy {
+    top: 255px;
+  }
+  .cyberpunk .close-game-panel {
+    top: 225px;
+  }
+}
+
+/* Metropolitan HUD: inset panels and mauve metal inspired by the city-builder reference. */
+.cyberpunk {
+  --panel: #242039ef;
+  --line: #80719880;
+  --ink: #e7def5;
+  --muted: #b4a9cc;
+  --cyan: #8be8ee;
+}
+.cyberpunk.game-view :where(.topbar, .controls, .metrics, .game-dock, .map-footer, .mayor-meter) {
+  border: 1px solid #8b739d;
+  border-radius: 5px;
+  background: #252039f2;
+  box-shadow:
+    inset 0 0 0 3px #37304f,
+    inset 0 0 0 4px #66577866,
+    0 7px 20px #110f2555;
+}
+.cyberpunk.game-view .topbar {
+  background: linear-gradient(180deg, #3d3452f5, #252039f5);
+}
+.cyberpunk.game-view .brand {
+  font:
+    800 21px / 1 ui-monospace,
+    monospace;
+  letter-spacing: 1px;
+}
+.cyberpunk.game-view .intro h1 {
+  color: #ead7f3;
+  font:
+    600 24px / 1.1 ui-monospace,
+    monospace;
+  text-shadow: 2px 2px #211b35;
+}
+.cyberpunk.game-view .intro h1 em {
+  color: #f1a5dd;
+}
+.cyberpunk.game-view .metric {
+  background: #2b2540;
+  padding: 12px 10px;
+  box-shadow: inset 0 -3px #171529;
+}
+.cyberpunk.game-view .metric > strong {
+  color: #d5c3eb;
+}
+.cyberpunk.game-view .metric-top {
+  color: #b9a8cb;
+}
+.cyberpunk.game-view .segmented button.active {
+  background: #554365;
+  color: #ffb7ec;
+  box-shadow: inset 0 -2px #ed9ed9;
+}
+.cyberpunk.game-view .game-dock button[aria-pressed="true"] {
+  background: #51415e;
+  color: #f5b4e7;
+  box-shadow: inset 0 -3px #df92cf;
+}
+.cyberpunk .district-marker {
+  padding: 4px 6px;
+  background: #282238e8;
+  border: 1px solid #9d7daa;
+  border-left: 3px solid #86e4ed;
+  box-shadow: 2px 3px #15132599;
+  border-radius: 2px;
+  font:
+    10px ui-monospace,
+    monospace;
+}
+.cyberpunk .district-marker.active {
+  border-color: #ffb0e7;
+  background: #4c3555;
+}
+.cyberpunk.game-view .district-marker small {
+  color: #bcb2cf;
+  font-size: 8px;
+}
+.cyberpunk .city-vehicle,
+.cyberpunk .city-person {
+  pointer-events: none;
+}
+.neon-road {
+  filter: url(#neon-glow);
+}
+.cyberpunk .city-legend {
+  max-width: 245px;
+  color: #edb4e2;
+  text-shadow: 1px 1px #181325;
+}
+.cyberpunk .city-clock {
+  color: #e6c4ed;
+  text-shadow: 1px 1px #181325;
+}
+.time-day .solid-face {
+  filter: brightness(1.18) saturate(0.85);
+}
+.time-day .sky-center {
+  stop-color: #78677f;
+}
+.time-day .sky-edge {
+  stop-color: #3b344e;
+}
+.time-dawn .sky-center {
+  stop-color: #79617d;
+}
+.time-dusk .sky-center {
+  stop-color: #694568;
+}
+.cyberpunk.game-view .map-tools button,
+.cyberpunk.game-view .camera-controls button {
+  background: #30283fef;
+  border-color: #8b739d;
+  color: #e1bde9;
+}
+
+.brand-icon {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+.splash {
+  background: radial-gradient(ellipse at center, #32203e, #131020);
+  color: #e9d9f4;
+}
+.splash .brand-icon {
+  width: 108px;
+  height: 108px;
+}
+.cyberpunk.game-view .brand {
+  gap: 8px;
+}
+.league-refresh {
+  margin-top: 20px;
+}
+.league-refresh:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+.custom-period {
+  position: relative;
+}
+.cyberpunk.game-view .custom-period button {
+  padding: 6px 10px;
+  font-size: 11px;
+}
+.cyberpunk.game-view .custom-period small {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  width: 310px;
+  padding: 10px 12px;
+  background: #302239f5;
+  border: 1px solid #b48bc1;
+  border-radius: 4px;
+  color: #efcee7;
+  font-size: 11px;
+  line-height: 1.5;
+  z-index: 6;
+}
+.custom-period input[aria-invalid="true"] {
+  border-color: #d9a2ba;
+}
+
+/* Keep district navigation visible even when compact layouts hide replay captions. */
+.cyberpunk.game-view .map-footer > .map-pages {
+  display: flex;
+}
+.cyberpunk.game-view .map-tools select {
+  width: 210px;
+  max-width: 28vw;
+  background: #101e33;
+  color: #a9edff;
+  border: 1px solid #365472;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 11px;
+}

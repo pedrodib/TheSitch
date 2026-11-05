@@ -1,0 +1,6 @@
+packages:
+  - .
+verifyDepsBeforeRun: false
+onlyBuiltDependencies:
+  - electron
+  - esbuild

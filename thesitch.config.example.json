@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "workspace": {
+    "id": "minha-equipe-meu-login",
+    "name": "La Serenissima",
+    "members": [{ "id": "meu-login", "name": "Seu nome", "externalLogin": "seu-login-github" }]
+  },
+  "organizations": ["sua-organizacao"],
+  "githubHost": "github.com",
+  "azure": { "enabled": false, "organization": "", "projects": [] },
+  "cli": { "gh": "gh", "az": "az", "codex": "codex" },
+  "codexSessionsPath": "/Users/seu-usuario/.codex/sessions",
+  "claudeSessionsPath": "/Users/seu-usuario/.claude/projects",
+  "repoMappings": {},
+  "calendar": {
+    "timezone": "America/Sao_Paulo",
+    "workdays": [1, 2, 3, 4, 5],
+    "automaticHolidays": true,
+    "excludedDates": [],
+    "holidays": {}
+  },
+  "syncMinutes": 10,
+  "analysis": { "enabled": false, "model": "gpt-6-luna", "includeDiffs": false },
+  "reducedMotion": false,
+  "launchAtLogin": false,
+  "onboardingComplete": true
+}

@@ -1,0 +1,511 @@
+/* Full-window city with an overlay HUD; forms retain their existing readable layout. */
+.game-view {
+  height: 100dvh;
+  min-height: 600px;
+  overflow: hidden;
+  background: #407f80;
+}
+.game-view main {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
+.game-view .topbar {
+  position: fixed;
+  inset: 16px 22px auto;
+  height: 58px;
+  padding: 0 20px 0 72px;
+  z-index: 4;
+  border: 1px solid #f4e4bd55;
+  border-radius: 14px;
+  background: #f9f2dfed;
+  box-shadow: 0 10px 35px #153b3d30;
+  backdrop-filter: blur(18px);
+}
+.game-view .brand {
+  font-size: 23px;
+}
+.game-view .top-right {
+  gap: 16px;
+}
+.game-view .intro {
+  position: fixed;
+  left: 32px;
+  top: 176px;
+  padding: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.game-view .intro h1 {
+  font-size: 30px;
+  letter-spacing: -1px;
+  color: #fff3d8;
+  text-shadow: 0 2px 12px #214f54;
+}
+.game-view .intro h1 em {
+  color: #eed5a5;
+}
+.game-view .intro p,
+.game-view .date-stamp {
+  display: none;
+}
+.game-view .eyebrow {
+  color: #e2ecdc;
+  font-size: 8px;
+}
+.game-view .controls {
+  position: fixed;
+  top: 88px;
+  left: 22px;
+  margin: 0;
+  padding: 6px 10px;
+  z-index: 4;
+  gap: 8px;
+  border: 1px solid #efe1bf88;
+  border-radius: 10px;
+  background: #faf3e4ed;
+  box-shadow: 0 8px 24px #234d4f25;
+}
+.game-view .period-label {
+  display: none;
+}
+.game-view .segmented button {
+  border-radius: 6px;
+}
+.game-view .segmented button.active {
+  background: #385e59;
+  color: #fff2d8;
+}
+.game-view .period-dates {
+  padding: 0 8px;
+  font-size: 10px;
+}
+.game-view .overview {
+  display: block;
+}
+.game-view .map-card {
+  border: 0;
+  background: none;
+}
+.game-view .map-card > .card-heading {
+  display: none;
+}
+.game-view .map-frame {
+  position: fixed;
+  inset: 0;
+  background: #407f80;
+}
+.game-view .map-scroll {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.game-view .city {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+}
+.game-view .city:active {
+  cursor: grabbing;
+}
+.game-view .map-caption {
+  left: 32px;
+  bottom: 112px;
+  opacity: 0.65;
+}
+.game-view .map-tools {
+  right: 24px;
+  bottom: 155px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.game-view .map-tools button {
+  width: 40px;
+  height: 40px;
+}
+.game-view .map-footer {
+  position: fixed;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(540px, 50vw);
+  padding: 14px 20px;
+  z-index: 3;
+  border: 1px solid #efe0bd66;
+  border-radius: 14px;
+  background: #fbf4e5ed;
+  box-shadow: 0 12px 35px #143c3e33;
+}
+.game-view .map-footer > div {
+  min-width: 90px;
+}
+.game-view .map-footer small {
+  display: none;
+}
+.game-view .metrics-section {
+  position: fixed;
+  top: 88px;
+  right: 22px;
+  z-index: 3;
+  margin: 0;
+  width: 390px;
+}
+.game-view .metrics-section > .section-heading {
+  display: none;
+}
+.game-view .metrics {
+  gap: 1px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px #21474c25;
+  border: 1px solid #efe0bd88;
+}
+.game-view .metric {
+  padding: 10px 12px;
+  background: #fcf4e3ed;
+  border: 0;
+}
+.game-view .metric-top {
+  font-size: 7px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.game-view .metric-top i {
+  display: none;
+}
+.game-view .metric > strong {
+  font-size: 27px;
+  margin: 4px 0;
+}
+.game-view .metric small {
+  display: none;
+}
+.game-view .metric-change {
+  font-size: 8px;
+}
+.game-dock {
+  position: fixed;
+  bottom: 26px;
+  left: 22px;
+  z-index: 5;
+  display: flex;
+  gap: 5px;
+  padding: 8px;
+  border: 1px solid #f6e3b877;
+  border-radius: 16px;
+  background: #193e40ed;
+  box-shadow: 0 12px 40px #163c4255;
+}
+.game-dock :where(button) {
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #d9dfc9;
+  padding: 10px 11px;
+  font-size: 9px;
+}
+.game-dock :where(button) span {
+  display: block;
+  font:
+    25px Georgia,
+    serif;
+  margin-bottom: 5px;
+}
+.game-dock button[aria-pressed="true"] {
+  color: #213e3c;
+  background: linear-gradient(#efddb4, #c9a66a);
+  box-shadow: inset 0 1px #fff2d7;
+}
+.game-view .gazette,
+.game-view .lower-grid,
+.game-view .energy {
+  display: none;
+}
+.game-view.panel-gazette .gazette,
+.game-view.panel-districts .lower-grid,
+.game-view.panel-energy .energy {
+  display: flex;
+  position: fixed;
+  z-index: 5;
+  right: 22px;
+  top: 182px;
+  bottom: 130px;
+  width: 360px;
+  margin: 0;
+  overflow: auto;
+  border-radius: 14px;
+  box-shadow: 0 20px 80px #12333466;
+  border: 1px solid #f3dfb9;
+  background: #fbf3e2f5;
+  backdrop-filter: blur(16px);
+}
+.game-view.panel-districts .lower-grid {
+  flex-direction: column;
+  gap: 0;
+}
+.game-view .districts,
+.game-view .activity {
+  padding: 22px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.game-view .section-heading h2 {
+  font-size: 23px;
+}
+.game-view .district-list {
+  max-height: 190px;
+}
+.game-view .activity-list {
+  max-height: 260px;
+}
+.game-view.panel-energy .energy {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 24px;
+}
+.game-view .energy-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.close-game-panel {
+  position: fixed;
+  top: 155px;
+  right: 25px;
+  z-index: 6;
+  border: 1px solid #e5d2a6;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  background: #f7e8c9;
+  color: #395b55;
+  font-size: 23px;
+}
+.game-view .gazette-title {
+  font-size: 32px;
+}
+.game-view .gazette-body {
+  padding: 18px 8px;
+}
+.game-view .gazette-body h2 {
+  font-size: 25px;
+}
+.game-view .onboarding {
+  position: fixed;
+  top: 240px;
+  left: 28px;
+  z-index: 4;
+  width: 330px;
+  max-height: calc(100vh - 360px);
+  overflow: auto;
+  border-radius: 14px;
+  padding: 20px;
+  background: #fbf3e4f2;
+}
+.game-view .onboarding h2 {
+  font-size: 22px;
+}
+.game-view .onboarding-seal {
+  display: none;
+}
+.game-view .onboarding[aria-label] {
+  top: auto;
+  bottom: 132px;
+  max-height: 150px;
+  width: 290px;
+  padding: 15px;
+}
+.game-view .onboarding[aria-label] h2 {
+  font-size: 16px;
+}
+.game-view .onboarding[aria-label] p {
+  font:
+    11px / 1.5 Arial,
+    sans-serif;
+}
+.game-view .app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 24px;
+  right: 24px;
+  padding: 5px 0;
+  z-index: 3;
+  color: #e0e7d5;
+  font-size: 7px;
+  pointer-events: none;
+}
+.game-view .app-footer button {
+  pointer-events: auto;
+  color: #f8ebca;
+  padding: 0 5px;
+}
+.game-view .alert,
+.game-view .sync-error {
+  position: fixed;
+  top: 158px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 550px;
+  z-index: 8;
+  border-radius: 10px;
+}
+.game-view .modal-backdrop {
+  z-index: 20;
+  backdrop-filter: blur(8px);
+}
+.game-view .settings-panel {
+  background: #fbf6e9;
+}
+.game-view :where(button) {
+  transition:
+    background 0.15s,
+    box-shadow 0.15s;
+}
+.game-view button:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1px #b69a6755;
+}
+.camera-controls {
+  position: absolute;
+  right: 24px;
+  bottom: 65px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 185px;
+  color: #f0e5c9;
+}
+.camera-controls > span {
+  width: 100%;
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+.game-view .camera-controls button {
+  background: #244d4de8;
+  border: 1px solid #b3c7af77;
+  color: #f4e7ca;
+  padding: 7px 10px;
+  border-radius: 7px;
+  font-size: 11px;
+}
+.game-view .camera-controls small {
+  font-size: 8px;
+  margin-top: 5px;
+}
+.district-marker {
+  display: block;
+  width: 100%;
+  border: 1px solid #f0dfb388;
+  border-radius: 7px;
+  background: #234b4be8;
+  color: #fff0cf;
+  padding: 6px;
+  box-shadow: 0 5px 12px #20474830;
+}
+.district-marker span {
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font:
+    11px Georgia,
+    serif;
+}
+.game-view .district-marker small {
+  display: block;
+  font-size: 8px;
+  color: #c5d5c1;
+  margin-top: 3px;
+}
+.district-marker.active {
+  background: #875b3b;
+  border-color: #ffe2a1;
+}
+.selected-face {
+  filter: brightness(1.12);
+}
+.city-boat {
+  animation: boat-drift 6s ease-in-out infinite alternate;
+}
+@keyframes boat-drift {
+  to {
+    translate: 14px 4px;
+  }
+}
+.reduce-motion .city-boat {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .city-boat {
+    animation: none;
+  }
+  .game-view :where(button) {
+    transition: none;
+  }
+}
+@media (max-width: 1150px) {
+  .game-view .metrics-section {
+    top: 144px;
+    width: 350px;
+  }
+  .game-view .intro {
+    top: 150px;
+  }
+  .game-view .map-footer {
+    left: 340px;
+    transform: none;
+    width: calc(100vw - 570px);
+    min-width: 210px;
+  }
+  .game-view .map-footer > div {
+    display: none;
+  }
+  .game-view.panel-gazette .gazette,
+  .game-view.panel-districts .lower-grid,
+  .game-view.panel-energy .energy {
+    top: 255px;
+  }
+  .close-game-panel {
+    top: 225px;
+  }
+}
+@media (max-width: 760px) {
+  .game-view .period-dates {
+    display: none;
+  }
+  .game-view .intro {
+    display: none;
+  }
+  .game-view .metrics-section {
+    left: 22px;
+    right: auto;
+  }
+  .game-view .map-footer {
+    bottom: 125px;
+    left: 22px;
+    width: 280px;
+  }
+  .game-view .topbar {
+    padding-left: 65px;
+  }
+  .game-view .brand small {
+    display: none;
+  }
+  .game-view .top-right {
+    gap: 5px;
+  }
+  .game-view .topbar .outline-button {
+    padding: 7px;
+  }
+  .game-view .onboarding {
+    top: 235px;
+  }
+  .game-view .metrics {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

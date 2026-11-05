@@ -1,0 +1,16 @@
+node_modules/
+out/
+release/
+test-results/
+playwright-report/
+*.sqlite*
+.DS_Store
+.cache/
+
+# Local caches, credentials and user data
+.pnpm-store/
+.env
+.env.*
+!.env.example
+*.log
+thesitch.config.json

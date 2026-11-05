@@ -1,0 +1,222 @@
+.import-summary {
+  position: fixed;
+  left: 22px;
+  bottom: 145px;
+  z-index: 4;
+  width: 300px;
+  padding: 14px;
+  text-align: left;
+  background: #0d1b30ed;
+  border: 1px solid #43738a;
+  border-radius: 8px;
+  color: #d6e8f5;
+  box-shadow: 0 10px 30px #0004;
+}
+.import-summary span {
+  display: block;
+  font: 9px monospace;
+  letter-spacing: 1px;
+  color: #74e7ee;
+}
+.import-summary strong {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+.import-summary small {
+  font-size: 9px;
+  color: #b1c4dc;
+}
+.cyberpunk .city-legend {
+  bottom: 265px;
+}
+.import-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  overflow: auto;
+  background: #0b1425;
+  color: #dceaf6;
+  padding: 40px max(30px, 6vw);
+  font:
+    14px / 1.5 -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+}
+.import-screen header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.import-screen h1 {
+  font-size: 30px;
+  margin: 8px 0;
+}
+.import-screen h2 {
+  font-size: 19px;
+  margin: 6px 0;
+}
+.import-screen p {
+  margin: 8px 0;
+  color: #b1c4dc;
+}
+.import-screen small {
+  color: #9eb9d3;
+  font-size: 11px;
+}
+.import-screen button {
+  border: 1px solid #3b617a;
+  border-radius: 6px;
+  padding: 10px 15px;
+  background: #172b42;
+  color: #daf5ff;
+}
+.import-screen button:disabled {
+  opacity: 0.5;
+}
+.import-screen header button {
+  font-size: 24px;
+  padding: 2px 12px;
+}
+.import-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+.import-actions span {
+  color: #9eb9d3;
+  font-size: 12px;
+}
+.import-sources {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.import-sources button {
+  text-align: left;
+  padding: 18px;
+  background: #111f34;
+}
+.import-sources button[aria-pressed="true"] {
+  border-color: #64e2ef;
+  box-shadow: inset 0 -3px #64e2ef;
+}
+.import-sources strong,
+.import-sources span,
+.import-sources small {
+  display: block;
+  margin: 3px 0;
+}
+.import-sources span {
+  color: #69e6dd;
+}
+.import-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+.import-facts section,
+.import-current {
+  padding: 20px;
+  background: #101e32;
+  border: 1px solid #294157;
+  border-radius: 8px;
+}
+.import-facts p {
+  font-size: 12px;
+}
+.import-run-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+.import-run-title b {
+  font-size: 12px;
+  color: #81e5e9;
+}
+.import-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+.import-step {
+  padding: 14px;
+  border: 1px solid #29475d;
+  border-radius: 5px;
+  min-width: 0;
+}
+.import-step > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: start;
+}
+.import-step strong {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.import-step span {
+  font-size: 10px;
+  white-space: nowrap;
+}
+.import-step small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.import-step progress {
+  width: 100%;
+  accent-color: #64decb;
+  height: 6px;
+}
+.import-screen [data-state="failed"],
+.import-screen [data-state="interrupted"] {
+  color: #ffbd84;
+}
+.import-screen [data-state="complete"] {
+  color: #75dfaf;
+}
+.import-screen [data-state="waiting"] {
+  color: #f3de9c;
+}
+.import-screen .import-error {
+  border-left: 3px solid #ffa47d;
+  padding: 10px;
+  background: #402536;
+  color: #ffe3ce;
+}
+.import-recent {
+  margin: 24px 0;
+}
+.import-recent details {
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #294157;
+}
+.import-screen summary {
+  cursor: pointer;
+  color: #8edbe8;
+}
+.import-screen .import-note {
+  font-size: 12px;
+  color: #98afc7;
+  line-height: 1.7;
+}
+@media (max-width: 900px) {
+  .import-sources,
+  .import-facts {
+    grid-template-columns: 1fr 1fr;
+  }
+  .import-screen {
+    padding: 25px;
+  }
+}
